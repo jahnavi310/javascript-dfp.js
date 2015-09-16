@@ -118,8 +118,8 @@ window.gptAdTag = {
                 if(divId == 'YOUR_DIV' && event.isEmpty == false){
                     window.onload = function () { 
                         var iframe = $('YOUR_DIV').find('iframe');
-                        iframe.height(100);
-                        iframe.width(976);
+                        iframe.height(YOUR_HEIGHT);
+                        iframe.width(YOUR_WIDTH);
                     }
                 }
             });*/ 
