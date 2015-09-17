@@ -1,5 +1,5 @@
 {
-    "name": "javascriptDfp",
+    "name": "javascript-dfp",
     "version": "",
     "devDependencies": {
         "grunt": "~0.4",
@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/jahnavi310/javascriptDfp.js"
+        "url": "https://github.com/jahnavi310/javascript-dfp.js"
     },
-    "main": "javascriptDfp.js"
+    "main": "javascript-dfp.js"
 }
