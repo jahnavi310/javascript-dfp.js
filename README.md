@@ -62,7 +62,7 @@ Specify an ad with multiple dimensions
 ```
 
 Usage example:
-
+---------------------
 Please refer to dfp-ad.html to see how the script is initialized.
 
 Issues
