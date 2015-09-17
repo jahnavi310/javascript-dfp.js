@@ -109,12 +109,12 @@
         makeIframeVisible: function(divId){
             //special code around iframe to make it visible  
             googletag.pubads().addEventListener('slotRenderEnded', function(event) {
-                if(divId == 'YOUR_DIV' && event.isEmpty == false){
+                if(divId === 'YOUR_DIV' && event.isEmpty === false){
                     window.onload = function () { 
                          var iframe = $('YOUR_DIV').find('iframe');
                         iframe.height(YOUR_HEIGHT);
                         iframe.width(YOUR_WIDTH);
-                    }
+                    };
                 }
             });                    
         },
