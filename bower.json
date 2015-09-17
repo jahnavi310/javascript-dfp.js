@@ -1,7 +1,7 @@
 {
-    "name": "javascriptDfp",
+    "name": "javascript-dfp",
     "version": "2.3.0",
-    "main": "javascriptDfp.js",
+    "main": "javascript-dfp.js",
     "ignore": [
         "Gruntfile.js"
     ]
