@@ -6,7 +6,7 @@ javascript-dfp -  A pure javascript implementation for Google DFP
 
 This script enables Double Click for Publishers (DFP) by Google working on your page. Just include this script on your page, initialize as described below and you should be good to go.
 
-Requirements
+Pre-requisites/Requirements
 ---------------------
 This library requires jquery and gpt.js (the latest version can be obtained from google's CDN network ) to be included in the head section of your page. 
 
