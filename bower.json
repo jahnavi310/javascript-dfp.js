@@ -1,0 +1,8 @@
+{
+    "name": "javascriptDfp",
+    "version": "2.3.0",
+    "main": "javascriptDfp.js",
+    "ignore": [
+        "Gruntfile.js"
+    ]
+}
