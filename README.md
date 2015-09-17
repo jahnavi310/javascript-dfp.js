@@ -23,7 +23,9 @@ Grunt installation:
 Node installation:
 ```sudo apt-get install nodejs```
 
-Once all of the above steps are done, run ```npm instal```l where this cloned repository resides.
+Once all of the above steps are done, run ```npm install``` where this cloned repository resides.
+
+For more info on grunt please refer: http://gruntjs.com/getting-started
 
 Next step would be to add the js file reference:
 
