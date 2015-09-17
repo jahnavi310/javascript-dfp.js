@@ -19,18 +19,22 @@ Next step would be to add the js file reference:
 ```<script type="text/javascript" src="...YOUR PATH/javascript-dfp.js"></script>```
 
 To show an ad on your page use the following:
-```<div id="div-gpt-test-ad" style="width:300px; height:250px;">
+```
+<div id="div-gpt-test-ad" style="width:300px; height:250px;">
   <script type="text/javascript">
     var targettingAttr = {"test":"test"};
     $.adTagInit.setAdSlot('6355419','Travel/Europe/France/Paris', [300, 250], 'div-gpt-test-ad', targettingAttr);
   </script>
-</div>```
+</div>
+```
 
-```<div id="div-gpt-test-ad" style="width:300px; height:250px;">
+```
+<div id="div-gpt-test-ad" style="width:300px; height:250px;">
   <script type="text/javascript">
     $.adTagInit.setAdSlot('6355419','Travel/Europe/France/Paris', [300, 250], 'div-gpt-test-ad', '{"test":"test"}');
   </script>
-</div>```
+</div>
+```
 
 targettingAttr is used to set the custom targetting for individual ads. This can either be a JSON object or a string.
 Use a JSON object in case you have a global object that is used across all the ads.
