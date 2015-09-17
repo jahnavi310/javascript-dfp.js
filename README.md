@@ -1,17 +1,19 @@
 javascript-dfp.js
+======================================================
 
 javascript-dfp -  A pure javascript implementation for Google DFP
+---------------------
 
 This script enables Double Click for Publishers (DFP) by Google working on your page. Just include this script on your page, initialize as described below and you should be good to go.
 
 Requirements
-
+---------------------
 This library requires jquery and gpt.js (the latest version can be obtained from google's CDN network ) to be included in the head section of your page. 
 
 Getting Started
-
+---------------------
 Installation:
-
+---------------------
 ```bower install javascript-dfp --save```
 
 Next step would be to add the js file reference:
@@ -40,9 +42,9 @@ targettingAttr is used to set the custom targetting for individual ads. This can
 Use a JSON object in case you have a global object that is used across all the ads.
 
 Issues
-
+---------------------
 Any issues found herewith and suggestions for improvement are most welcome
 
 Contributing
-
+---------------------
 Pull requests and contribution are more than welcome
