@@ -6,79 +6,66 @@
  *  generated DFP ad tags 
 *   to GPT ad tags.
  */
+     
+(function (window, undefined) {
 
-window.gptAdTag = {
-
-    insertTag: function () {      
-
-        var googletag = googletag || {};
-        googletag.cmd = googletag.cmd || [];
-
-        (function() {
-            var gads = document.createElement('script');
-            gads.async = true;
-            gads.type = 'text/javascript';
-            var useSSL = 'https:' == document.location.protocol;
-            gads.src = (useSSL ? 'https:' : 'http:') +
-              '//www.googletagservices.com/tag/js/gpt.js';
-            var node = document.getElementsByTagName('script')[0];
-            node.parentNode.insertBefore(gads, node);
-        })();
-    },
+    var debugEnabled = '';
+    var adUnitPath = '';
+    var adSlot = '';
+    var targetParamsObj = '', targetParamsStr = '', targetParams = '', targetSlot = '';
     
-    setAdSlot: function (networkCode, unitName, adSize, divId, customTargettingAttributes) {
+    
+    /**
+    * Add function to the jQuery
+    */
+    $.adTagInit = $.fn.adTagInit  = {
 
-        var debugEnabled;
-        var adUnitPath = '';
-        var adSlot;
+        setNetwork: function (networkCode, unitName) {
+            adUnitPath = '/' + networkCode + '/' + unitName;
+        },
+
+        additionalDebug: function(){
+            if(localStorage.getItem('debug') === null){
+                localStorage.setItem('debug','false');
+            }           
+            debugEnabled = localStorage.getItem('debug');
+        },
+
+        setTargettingAttributes: function(customTargettingAttributes){
+            /**
+            *   Convert targeting values to a array of : pair so we can 
+            *   feed them into setTargeting for the slot later
+            */           
+
+            if(customTargettingAttributes !== undefined){
+                targetParamsObj = customTargettingAttributes;
+                if(typeof customTargettingAttributes === 'object'){
+                    targetParamsStr = JSON.stringify(targetParamsObj);
+                }
+                else {
+                    targetParamsStr = targetParamsObj;
+                }
+                targetParamsStr = targetParamsStr.replace('{','');
+                targetParamsStr = targetParamsStr.replace('}','');
+                targetParams = targetParamsStr.split(',');
+            }
         
-        if(!window.googletag){
-            this.insertTag();
-        }
+        },
 
-        adUnitPath = '/' + networkCode + '/' + unitName;
+        createAdSlot: function(adSize, divId){
+            googletag.cmd.push(function() {
+                adSlot = googletag.defineSlot(adUnitPath, adSize, divId);
+                adSlot.addService(googletag.pubads());
+             });  
+        },
 
-        var raw = [];
-    
-        var adTargeting, adTargetingString;
-
-        if(localStorage.getItem('debug') == null){
-            localStorage.setItem('debug','false');
-        }
-       
-        debugEnabled = localStorage.getItem('debug');
-        /**
-        *   Convert targeting values to a array of : pairs so we can 
-        *   feed them into setTargeting for the slot later
-        */           
-
-        if(customTargettingAttributes != null){
-            adTargeting = customTargettingAttributes;
-            adTargetingString = JSON.stringify(adTargeting);
-            adTargetingString = adTargetingString.replace('{','');
-            adTargetingString = adTargetingString.replace('}','');
-            rawTargetingArray = adTargetingString.split(',');
-        }
-    
-        if (debugEnabled == 'true') {
-            console.log('----------------------------------------------------------------------');
-            console.log('setting Slot with options -- networkCode: ' + networkCode + 
-                ' -- adSize:' + adSize + ' -- divId:' + divId + ' -- detail:' + detail
-                + ' -- pos:' + pos + ' -- ordmod:' + ordmod);
-            console.log('----------------------------------------------------------------------');
-        }
-
-        googletag.cmd.push(function() {
-            adSlot = googletag.defineSlot(adUnitPath, adSize, divId);
-            adSlot.addService(googletag.pubads());
-            
-            if(customTargettingAttributes != null){
-                for (var i = 0, len = rawTargetingArray.length; i < len; i++) {
+        setCustomTargetting: function(customTargettingAttributes){
+            if(customTargettingAttributes !== undefined){
+                for (var i = 0, len = targetParams.length; i < len; i++) {
                     var split = [];
-                    split = rawTargetingArray[i].split(':');
+                    split = targetParams[i].split(':');
                     var key = split[0];
                     var value = split[1];
-
                     key = key.replace('"', '');
                     value = value.replace('"', '');
                     key = key.slice(0, key.length - 1);
@@ -87,43 +74,68 @@ window.gptAdTag = {
                     adSlot.setTargeting(key, value);
 
                     if (debugEnabled == 'true') {
-                        console.log('Supplying customTargettingAttributes values to adSlot - ' + key + ',' + value);
+                        console.log('Supplying custom Targetting Attributes values to adSlot - ' + key + ',' + value);
                     }
                 }
             }
-            
-            //enable syncrendering and SRA for better performance.
-            googletag.pubads().enableSyncRendering();
-            googletag.pubads().enableSingleRequest();
+        },
 
-            googletag.enableServices();
-            googletag.display(divId);   
+        pushAdSlotDiv: function(divId){
+            googletag.cmd.push(function() {
+                //enable syncrendering and SRA for better performance, please comment out if using async ads.
+                googletag.pubads().enableSyncRendering();
+                googletag.pubads().enableSingleRequest();
 
-            var targetSlot = adSlot;
+                googletag.enableServices();
+                googletag.display(divId);   
 
-            //additional debugging to see if creative rendered callback
-            if (debugEnabled == 'true') {
-                googletag.pubads().addEventListener('slotRenderEnded', function(event) {
-                    if(event.slot == targetSlot){
-                        console.log('################  GOOGLETAG: Creative rendered callback');
-                        console.log(event);
-                        console.log('divId: ' + divId + ' Creative with id: ' + event.creativeId +
-                            ' is rendered to slot of size: ' + event.size[0] + 'x' + event.size[1]);
-                    }
-                }); 
-            }
+                targetSlot = adSlot;
 
+                //additional debugging to see if creative rendered callback
+                if (debugEnabled == 'true') {
+                    googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+                        if(event.slot == targetSlot){
+                            console.log('################  GOOGLETAG: Creative rendered callback STARTS################');
+                            console.log(event);
+                            console.log('divId: ' + divId + ' Creative with id: ' + event.creativeId +
+                                ' is rendered to slot of size: ' + event.size[0] + 'x' + event.size[1]);
+                            console.log('################  GOOGLETAG: Creative rendered callback ENDS################');
+                        }
+                    }); 
+                }
+            }); 
+        },
+
+        makeIframeVisible: function(divId){
             //special code around iframe to make it visible  
-             /*googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+            googletag.pubads().addEventListener('slotRenderEnded', function(event) {
                 if(divId == 'YOUR_DIV' && event.isEmpty == false){
                     window.onload = function () { 
-                        var iframe = $('YOUR_DIV').find('iframe');
+                         var iframe = $('YOUR_DIV').find('iframe');
                         iframe.height(YOUR_HEIGHT);
                         iframe.width(YOUR_WIDTH);
                     }
                 }
-            });*/ 
-        });        
-    }
-};
+            });                    
+        },
+
+        setAdSlot: function (networkCode, unitName, adSize, divId, customTargettingAttributes) {
+            this.setNetwork(networkCode, unitName);
+            this.additionalDebug();
+            this.setTargettingAttributes(customTargettingAttributes);
+            if (debugEnabled == 'true') {
+                console.log('----------------------------------------------------------------------');
+                console.log('Setting SLOT with options -- networkCode: ' + networkCode + 
+                    ' -- adSize:' + adSize + ' -- divId:' + divId);
+                console.log('----------------------------------------------------------------------');
+            }
+            this.createAdSlot(adSize, divId);
+            this.setCustomTargetting(customTargettingAttributes);
+            this.pushAdSlotDiv(divId);
+            
+            //uncomment the below function only if iframe is invisible due to some unforseen reason
+            //this.makeIframeVisible(divId)
+        }
+    };
+})(window);
 
