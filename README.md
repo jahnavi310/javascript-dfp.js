@@ -36,7 +36,7 @@ Custom targetting here is a JSON object, use a JSON object in case you have a gl
 <div id="div-gpt-test-ad" style="width:300px; height:250px;">
   <script type="text/javascript">
     var targettingAttr = {"test":"test"}; //this can be a global object
-    $.adTagInit.setAdSlot('6355419','Travel/Europe/France/Paris', [300, 250], 'div-gpt-test-ad', targettingAttr);
+    $.adTagInit.setAndDisplayAdSlot('6355419','Travel/Europe/France/Paris', [300, 250], 'div-gpt-test-ad', targettingAttr);
   </script>
 </div>
 ```
@@ -45,7 +45,7 @@ Custom targetting here is a string, this will be used only for a particular ad.
 ```
 <div id="div-gpt-test-ad" style="width:300px; height:250px;">
   <script type="text/javascript">
-    $.adTagInit.setAdSlot('6355419','Travel/Europe/France/Paris', [300, 250], 'div-gpt-test-ad', '{"test":"test"}');
+    $.adTagInit.setAndDisplayAdSlot('6355419','Travel/Europe/France/Paris', [300, 250], 'div-gpt-test-ad', '{"test":"test"}');
   </script>
 </div>
 ```
@@ -54,7 +54,7 @@ Specify an ad with multiple dimensions
 ```
 <div id="div-gpt-test-ad" style="width:300px; height:250px;">
   <script type="text/javascript">
-    $.adTagInit.setAdSlot('6355419','Travel/Europe/France/Paris', [[300, 250],[400,600]], 'div-gpt-test-ad', '{"test":"test"}');
+    $.adTagInit.setAndDisplayAdSlot('6355419','Travel/Europe/France/Paris', [[300, 250],[400,600]], 'div-gpt-test-ad', '{"test":"test"}');
   </script>
 </div>
 ```
