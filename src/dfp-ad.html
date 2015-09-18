@@ -1,8 +1,8 @@
 <html>
 <head>
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.googletagservices.com/tag/js/gpt.js"></script>
-<script type="text/javascript" src="javascript-dfp.min.js"></script>
+<script type="text/javascript" src="javascript-dfp.js"></script>
 
 <title>GPT Test Ad</title>
 
@@ -16,9 +16,14 @@
     <div id="div-gpt-test-ad" style="width:300px; height:250px;">
       <script type="text/javascript">
         var targettingAttr = {"test":"test"};
-        $.adTagInit.setAndDisplayAdSlot('6355419','Travel/Europe/France/Paris', [300, 250], 'div-gpt-test-ad','{"test":"test"}');
+        $.adTagInit.defineAdSlot('6355419','Travel/Europe/France/Paris', [300, 250], 'div-gpt-test-ad','{"test":"test"}');
+        
       </script>
     </div>
+
+<button onclick="$.adTagInit.refreshAllSlots();">Refresh Ads</button>
+
+<button onclick="$.adTagInit.clearAllSlots();">Clear Ads</button>
 
 </body>
 </html>
