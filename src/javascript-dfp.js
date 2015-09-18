@@ -11,10 +11,8 @@
     "use strict";
 
     var debugEnabled = '', adUnitPath = '', adSlot = '';
-    var enableSRA = false, enableSyncRendering = false;
     var targetParamsObj = '', targetParamsStr = '', targetParams = '', targetSlot = '';
     var allSlots = [];
-
     
     /**
     * Add function to the jQuery
@@ -34,6 +32,22 @@
                 localStorage.setItem('debug','false');
             }           
             debugEnabled = localStorage.getItem('debug');
+        },
+
+        /**
+         *  Use this function to turn on SRA or syncrendering
+         *
+        **/
+        enableSRAandSyncRendering: function(SRA, syncRendering){
+                //change the value to true to turn on SRA and syncr-endering.
+                if(enableSyncRendering){
+                    googletag.pubads().enableSyncRendering();
+                }
+                
+                if(enableSRA){
+                    googletag.pubads().enableSingleRequest();
+                }
+
         },
 
         setTargettingAttributes: function(customTargettingAttributes){
@@ -94,15 +108,6 @@
 
         pushAdSlotDiv: function(divId){
             googletag.cmd.push(function() {
-
-                //change the value to true to turn on SRA and syncr-endering.
-                if(enableSyncRendering){
-                    googletag.pubads().enableSyncRendering();
-                }
-                
-                if(enableSRA){
-                    googletag.pubads().enableSingleRequest();
-                }
                 
                 googletag.enableServices();
                 googletag.display(divId);   
