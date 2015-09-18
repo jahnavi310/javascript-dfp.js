@@ -50,12 +50,11 @@
 
         },
 
-        setTargettingAttributes: function(customTargettingAttributes){
-            /**
-            *   Convert targeting values to a array of : pair so we can 
-            *   feed them into setTargeting for the slot later
-            */           
-
+        /**
+        *   Convert targeting values to a array of : pair so we can 
+        *   feed them into setTargeting for the slot later
+        */ 
+        setTargettingAttributes: function(customTargettingAttributes){          
             if(customTargettingAttributes !== undefined){
                 targetParamsObj = customTargettingAttributes;
                 if(typeof customTargettingAttributes === 'object'){
@@ -128,6 +127,10 @@
             }); 
         },
 
+
+        /**
+        *   Tamper with the iframe and make it visible
+        **/
         makeIframeVisible: function(divId){
             //special code around iframe to make it visible  
             googletag.pubads().addEventListener('slotRenderEnded', function(event) {
@@ -164,6 +167,9 @@
             });
          },
 
+        /**
+        *   Define out all the slots
+        **/
         defineAdSlot: function (networkCode, unitName, adSize, divId, customTargettingAttributes) {
             this.setNetwork(networkCode, unitName);
             this.additionalDebug();
