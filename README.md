@@ -12,7 +12,7 @@ This library requires jquery and gpt.js (the latest version can be obtained from
 
 Installation:
 ---------------------
-You can either choose to clone this repo in your local workspace or just install it via bower. I highly recomment bower, it's just so easy:
+You can either choose to clone this repo in your local workspace or just install it via bower. I highly recommend bower, it's just so easy:
 ```bower install javascript-dfp --save```
 
 Please install grunt for a smooth and refined build process.
@@ -67,7 +67,7 @@ Please refer to https://github.com/jahnavi310/javascript-dfp.js/blob/master/dfp-
 
 Issues
 ---------------------
-Any issues found herewith and suggestions for improvement are most welcome
+Any issues found here or suggestions for improvement are most welcome.
 
 Contributing
 ---------------------
