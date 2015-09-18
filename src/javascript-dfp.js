@@ -8,12 +8,13 @@
  */
      
 (function (window, undefined) {
+    "use strict";
 
-    var debugEnabled = '';
-    var adUnitPath = '';
-    var adSlot = '';
+    var debugEnabled = '', adUnitPath = '', adSlot = '';
+    var enableSRA = false, enableSyncRendering = false;
     var targetParamsObj = '', targetParamsStr = '', targetParams = '', targetSlot = '';
-    
+    var allSlots = [];
+
     
     /**
     * Add function to the jQuery
@@ -24,6 +25,10 @@
             adUnitPath = '/' + networkCode + '/' + unitName;
         },
 
+        /** 
+        *   This function sets up additional debug in addition to the google console.
+        *   Change the value of debug to true to turn debugging on.
+        **/
         additionalDebug: function(){
             if(localStorage.getItem('debug') === null){
                 localStorage.setItem('debug','false');
@@ -52,13 +57,20 @@
         
         },
 
+        /**
+        *   Create the ad slot
+        **/
         createAdSlot: function(adSize, divId){
             googletag.cmd.push(function() {
                 adSlot = googletag.defineSlot(adUnitPath, adSize, divId);
                 adSlot.addService(googletag.pubads());
-             });  
+                allSlots.push(adSlot);
+             }); 
         },
 
+        /**
+        *   Set custom targetting for all the ad slots
+        **/
         setCustomTargetting: function(customTargettingAttributes){
             if(customTargettingAttributes !== undefined){
                 for (var i = 0, len = targetParams.length; i < len; i++) {
@@ -82,10 +94,16 @@
 
         pushAdSlotDiv: function(divId){
             googletag.cmd.push(function() {
-                //enable syncrendering and SRA for better performance, please comment out if using async ads.
-                googletag.pubads().enableSyncRendering();
-                googletag.pubads().enableSingleRequest();
 
+                //change the value to true to turn on SRA and syncr-endering.
+                if(enableSyncRendering){
+                    googletag.pubads().enableSyncRendering();
+                }
+                
+                if(enableSRA){
+                    googletag.pubads().enableSingleRequest();
+                }
+                
                 googletag.enableServices();
                 googletag.display(divId);   
 
@@ -96,7 +114,6 @@
                     googletag.pubads().addEventListener('slotRenderEnded', function(event) {
                         if(event.slot == targetSlot){
                             console.log('################  GOOGLETAG: Creative rendered callback STARTS################');
-                            console.log(event);
                             console.log('divId: ' + divId + ' Creative with id: ' + event.creativeId +
                                 ' is rendered to slot of size: ' + event.size[0] + 'x' + event.size[1]);
                             console.log('################  GOOGLETAG: Creative rendered callback ENDS################');
@@ -119,7 +136,30 @@
             });                    
         },
 
-        setAndDisplayAdSlot: function (networkCode, unitName, adSize, divId, customTargettingAttributes) {
+        /**
+        *   Refresh all the slots
+        **/
+        refreshAllSlots: function(){
+            console.log("Ad Slots are REFRESHED.....");
+            googletag.cmd.push(function() {
+                $.each( allSlots, function( index, value ){
+                    googletag.pubads().refresh([allSlots][index]);
+                });
+            });
+        
+        },
+
+        /**
+        *   Clear out all the slots
+        **/
+        clearAllSlots: function() {
+            console.log('Ad Slots are CLEARED.....');
+            googletag.cmd.push(function() {
+                googletag.pubads().clear();
+            });
+         },
+
+        defineAdSlot: function (networkCode, unitName, adSize, divId, customTargettingAttributes) {
             this.setNetwork(networkCode, unitName);
             this.additionalDebug();
             this.setTargettingAttributes(customTargettingAttributes);
