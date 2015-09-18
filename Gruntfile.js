@@ -4,12 +4,12 @@ module.exports = function(grunt) {
 grunt.initConfig({
 	pkg: grunt.file.readJSON('package.json'),
 	jshint: {
-		all: ['Gruntfile.js', 'javascript-dfp.js']
+		all: ['Gruntfile.js', 'src/javascript-dfp.js']
 	},
 	uglify: {
 		build: {
-			src: 'javascript-dfp.js',
-			dest: 'javascript-dfp.min.js'
+			src: 'src/javascript-dfp.js',
+			dest: 'dist/javascript-dfp.min.js'
 		}
 	}
 });
