@@ -10,14 +10,26 @@
 (function (window, undefined) {
     "use strict";
 
-    var debugEnabled = '', adUnitPath = '', adSlot = '';
+    var adUnitPath = '', adSlot = '';
     var targetParamsObj = '', targetParamsStr = '', targetParams = '', targetSlot = '';
     var allSlots = [];
+    var options = {};
     
     /**
     * Add function to the jQuery
     */
     $.adTagInit = $.fn.adTagInit  = {
+
+        init: function(divId, opts){
+            // Set default options
+            options = {
+                debugEnabled: opts.debugEnabled,
+                customTargettingAttributes: opts.customTargettingAttributes,
+                enableSyncRendering: opts.enableSyncRendering,
+                enableSRA: opts.enableSRA
+            };
+
+        },
 
         setNetwork: function (networkCode, unitName) {
             adUnitPath = '/' + networkCode + '/' + unitName;
@@ -29,25 +41,9 @@
         **/
         additionalDebug: function(){
             if(localStorage.getItem('debug') === null){
-                localStorage.setItem('debug','false');
+                localStorage.setItem('debug', options.debugEnabled);
             }           
-            debugEnabled = localStorage.getItem('debug');
-        },
-
-        /**
-         *  Use this function to turn on SRA or syncrendering
-         *
-        **/
-        enableSRAandSyncRendering: function(SRA, syncRendering){
-                //change the value to true to turn on SRA and syncr-endering.
-                if(enableSyncRendering){
-                    googletag.pubads().enableSyncRendering();
-                }
-                
-                if(enableSRA){
-                    googletag.pubads().enableSingleRequest();
-                }
-
+            options.debugEnabled = localStorage.getItem('debug');
         },
 
         /**
@@ -55,9 +51,9 @@
         *   feed them into setTargeting for the slot later
         */ 
         setTargettingAttributes: function(customTargettingAttributes){          
-            if(customTargettingAttributes !== undefined){
+            if(options.customTargettingAttributes !== undefined){
                 targetParamsObj = customTargettingAttributes;
-                if(typeof customTargettingAttributes === 'object'){
+                if(typeof options.customTargettingAttributes === 'object'){
                     targetParamsStr = JSON.stringify(targetParamsObj);
                 }
                 else {
@@ -85,7 +81,7 @@
         *   Set custom targetting for all the ad slots
         **/
         setCustomTargetting: function(customTargettingAttributes){
-            if(customTargettingAttributes !== undefined){
+            if(options.customTargettingAttributes !== undefined){
                 for (var i = 0, len = targetParams.length; i < len; i++) {
                     var split = [];
                     split = targetParams[i].split(':');
@@ -98,7 +94,7 @@
 
                     adSlot.setTargeting(key, value);
 
-                    if (debugEnabled == 'true') {
+                    if (options.debugEnabled == 'true') {
                         console.log('Supplying custom Targetting Attributes values to adSlot - ' + key + ',' + value);
                     }
                 }
@@ -108,13 +104,21 @@
         pushAdSlotDiv: function(divId){
             googletag.cmd.push(function() {
                 
+                if(options.enableSyncRendering){
+                    googletag.pubads().enableSyncRendering();
+                }
+                
+                if(options.enableSRA){
+                    googletag.pubads().enableSingleRequest();
+                }
+
                 googletag.enableServices();
                 googletag.display(divId);   
 
                 targetSlot = adSlot;
 
                 //additional debugging to see if creative rendered callback
-                if (debugEnabled == 'true') {
+                if (options.debugEnabled == 'true') {
                     googletag.pubads().addEventListener('slotRenderEnded', function(event) {
                         if(event.slot == targetSlot){
                             console.log('################  GOOGLETAG: Creative rendered callback STARTS################');
@@ -170,23 +174,24 @@
         /**
         *   Define out all the slots
         **/
-        defineAdSlot: function (networkCode, unitName, adSize, divId, customTargettingAttributes) {
+        defineAdSlot: function (networkCode, unitName, adSize, divId, options) {
+            this.init(divId, options);
             this.setNetwork(networkCode, unitName);
             this.additionalDebug();
-            this.setTargettingAttributes(customTargettingAttributes);
-            if (debugEnabled == 'true') {
+            this.setTargettingAttributes(options.customTargettingAttributes);
+            if (options.debugEnabled == 'true') {
                 console.log('----------------------------------------------------------------------');
                 console.log('Setting SLOT with options -- networkCode: ' + networkCode + 
                     ' -- adSize:' + adSize + ' -- divId:' + divId);
                 console.log('----------------------------------------------------------------------');
             }
             this.createAdSlot(adSize, divId);
-            this.setCustomTargetting(customTargettingAttributes);
+            this.setCustomTargetting(options.customTargettingAttributes);
             this.pushAdSlotDiv(divId);
             
             //uncomment the below function only if iframe is invisible due to some unforseen reason
             //this.makeIframeVisible(divId)
-        }
+        },
     };
 })(window);
 
