@@ -4,12 +4,12 @@ module.exports = function(grunt) {
 grunt.initConfig({
 	pkg: grunt.file.readJSON('package.json'),
 	jshint: {
-		all: ['Gruntfile.js', 'javascript-dfp.js']
+		all: ['Gruntfile.js', 'src/javascript-dfp.js']
 	},
 	uglify: {
 		build: {
-			src: 'javascript-dfp.js',
-			dest: 'javascript-dfp.min.js'
+			src: 'src/javascript-dfp.js',
+			dest: 'dist/javascript-dfp.min.js'
 		}
 	}
 });
@@ -21,9 +21,9 @@ grunt.loadNpmTasks('grunt-contrib-jshint');
 grunt.loadNpmTasks('grunt-contrib-uglify');
 
 // Load the plugin that provides the "jasmine" task.
-grunt.loadNpmTasks('grunt-contrib-jasmine');
+//grunt.loadNpmTasks('grunt-contrib-jasmine');
 
 // Default task(s).
-grunt.registerTask('default', ['jshint', 'jasmine', 'uglify']);
+grunt.registerTask('default', ['jshint', 'uglify']);
 
 };
