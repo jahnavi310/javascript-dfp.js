@@ -10,7 +10,7 @@
 (function (window, undefined) {
     "use strict";
 
-    var adUnitPath = '', adSlot = '';
+    var adUnitPath = '', adSlot = [];
     var targetParamsObj = '', targetParamsStr = '', targetParams = '', targetSlot = '';
     var allSlots = [];
     var options = {};
@@ -50,9 +50,9 @@
         *   Convert targeting values to a array of : pair so we can 
         *   feed them into setTargeting for the slot later
         */ 
-        setTargettingAttributes: function(customTargettingAttributes){          
+        setTargettingAttributes: function(divId){          
             if(options.customTargettingAttributes !== undefined){
-                targetParamsObj = customTargettingAttributes;
+                targetParamsObj = options.customTargettingAttributes;
                 if(typeof options.customTargettingAttributes === 'object'){
                     targetParamsStr = JSON.stringify(targetParamsObj);
                 }
@@ -71,16 +71,16 @@
         **/
         createAdSlot: function(adSize, divId){
             googletag.cmd.push(function() {
-                adSlot = googletag.defineSlot(adUnitPath, adSize, divId);
-                adSlot.addService(googletag.pubads());
-                allSlots.push(adSlot);
+                adSlot[divId] = googletag.defineSlot(adUnitPath, adSize, divId);
+                adSlot[divId].addService(googletag.pubads());
+                allSlots.push(adSlot[divId]);
              }); 
         },
 
         /**
         *   Set custom targetting for all the ad slots
         **/
-        setCustomTargetting: function(customTargettingAttributes){
+        setCustomTargetting: function(divId){
             if(options.customTargettingAttributes !== undefined){
                 for (var i = 0, len = targetParams.length; i < len; i++) {
                     var split = [];
@@ -92,10 +92,10 @@
                     key = key.slice(0, key.length - 1);
                     value = value.slice(0, value.length - 1);
 
-                    adSlot.setTargeting(key, value);
+                    adSlot[divId].setTargeting(key, value);
 
                     if (options.debugEnabled == 'true') {
-                        console.log('Supplying custom Targetting Attributes values to adSlot - ' + key + ',' + value);
+                        console.log('Supplying custom Targetting Attributes values to adSlot[' + divId + '] - ' + key + ',' + value);
                     }
                 }
             }
@@ -103,7 +103,7 @@
 
         pushAdSlotDiv: function(divId){
             googletag.cmd.push(function() {
-                
+
                 if(options.enableSyncRendering){
                     googletag.pubads().enableSyncRendering();
                 }
@@ -115,16 +115,16 @@
                 googletag.enableServices();
                 googletag.display(divId);   
 
-                targetSlot = adSlot;
+                targetSlot = adSlot[divId];
 
                 //additional debugging to see if creative rendered callback
                 if (options.debugEnabled == 'true') {
                     googletag.pubads().addEventListener('slotRenderEnded', function(event) {
                         if(event.slot == targetSlot){
-                            console.log('################  GOOGLETAG: Creative rendered callback STARTS################');
+                            console.log('################################  GOOGLETAG: Creative rendered callback STARTS################');
                             console.log('divId: ' + divId + ' Creative with id: ' + event.creativeId +
                                 ' is rendered to slot of size: ' + event.size[0] + 'x' + event.size[1]);
-                            console.log('################  GOOGLETAG: Creative rendered callback ENDS################');
+                            console.log('################################  GOOGLETAG: Creative rendered callback ENDS################');
                         }
                     }); 
                 }
@@ -172,26 +172,47 @@
          },
 
         /**
+        *   Use this function to update the custom targetting value of a specific targetting attribute or add a new one
+        *   based on the value of a textbox. - VERY USEFUL
+        **/
+        refreshSpecificSlot: function(divId, targetAttr, targetAttrVal) {
+              googletag.cmd.push(function() {
+                var slot = adSlot[divId];
+                slot.addService(googletag.pubads());
+                googletag.pubads().clear([slot]);
+
+                slot.setTargeting(targetAttr, targetAttrVal);
+                googletag.display(divId);
+                if (options.debugEnabled == 'true') {
+                    console.log(slot.getTargetingKeys());
+                 }       
+                googletag.pubads().refresh([slot]);
+            
+              }); 
+            
+        },
+
+        /**
         *   Define out all the slots
         **/
         defineAdSlot: function (networkCode, unitName, adSize, divId, options) {
             this.init(divId, options);
             this.setNetwork(networkCode, unitName);
             this.additionalDebug();
-            this.setTargettingAttributes(options.customTargettingAttributes);
+            this.setTargettingAttributes(divId);
             if (options.debugEnabled == 'true') {
-                console.log('----------------------------------------------------------------------');
+                console.log('-------------------------------------------------------------------------------------------------');
                 console.log('Setting SLOT with options -- networkCode: ' + networkCode + 
                     ' -- adSize:' + adSize + ' -- divId:' + divId);
-                console.log('----------------------------------------------------------------------');
+                console.log('-------------------------------------------------------------------------------------------------');
             }
             this.createAdSlot(adSize, divId);
-            this.setCustomTargetting(options.customTargettingAttributes);
+            this.setCustomTargetting(divId);
             this.pushAdSlotDiv(divId);
             
             //uncomment the below function only if iframe is invisible due to some unforseen reason
             //this.makeIframeVisible(divId)
-        },
+        }
     };
 })(window);
 
