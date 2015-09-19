@@ -10,8 +10,6 @@
 
 <body>
 <h1>GPT Test Ad</h1>
-
- <p>GPT Test Ad</p>
    
     <div id="div-gpt-test-ad" style="width:300px; height:250px;">
       <script type="text/javascript">
@@ -29,6 +27,17 @@
 <button onclick="$.adTagInit.refreshAllSlots();">Refresh Ads</button>
 
 <button onclick="$.adTagInit.clearAllSlots();">Clear Ads</button>
+<br/>
+<br/>
+<br/>
+<div>Enter a targetting attribute to refresh the ad with the new attribute: <input type="text" id="newAttr"><br>
+<script type="text/javascript">
+	$( "#newAttr" ).blur(function() {
+		var val = $( "#newAttr" ).val();
+		$.adTagInit.refreshSpecificSlot('div-gpt-test-ad','anothertest',val);
+	});
+</script>
+</div>
 
 </body>
 </html>
