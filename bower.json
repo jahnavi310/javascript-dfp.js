@@ -1,7 +1,7 @@
 {
     "name": "javascript-dfp",
     "version": "1.0",
-    "authors": "Jahnavi Patel <jahnavi310@gmail.com>"
+    "authors": "Jahnavi Patel <jahnavi310@gmail.com>",
     "description": "A pure javascript implementation for DFP ads",
     "main": "javascript-dfp.js",
     "keywords": [
