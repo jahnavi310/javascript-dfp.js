@@ -1,6 +1,9 @@
 {
   "name": "javascript-dfp",
-  "version": "0.0.1",
+  "version": "1.0",
+  "description": "A pure javascript DFP implementation",
+  "author": "Jahnavi Patel <jahnavi310@gmail.com>",
+  "homepage": "https://github.com/jahnavi310/javascript-dfp.js",
   "devDependencies": {
     "grunt": "~0.4",
     "grunt-contrib-htmlmin": "^0.4.0",
