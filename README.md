@@ -53,12 +53,30 @@ Custom targetting here is a string, this will be used only for a particular ad.
 ```
 
 Specify an ad with multiple dimensions
+
 ```
 <div id="div-gpt-test-ad" style="width:300px; height:250px;">
   <script type="text/javascript">
     $.adTagInit.setAndDisplayAdSlot('6355419','Travel/Europe/France/Paris', [[300, 250],[400,600]], 'div-gpt-test-ad', '{"test":"test"}');
   </script>
 </div>
+```
+
+Refresh ads with new targetting values - Similar to ASYNC ads (can be called on any Jquery event)
+---------------------
+The following function is used to update an existing ad slot and refresh it by adding a new targetting attribute or updating an existing attribute.
+
+Add a new targetting attribute to the add loaded within ```div-gpt-test-ad``` called ```anothertest``` which the value of ```newAttr``` input textbox.
+
+To update the value of an existing targetting attribute, say for e.g. ```test``` replace ```anothertest``` with ```test```.
+
+```
+<script type="text/javascript">
+	$( "#newAttr" ).blur(function() {
+		var val = $( "#newAttr" ).val();
+		$.adTagInit.refreshSpecificSlot('div-gpt-test-ad','anothertest',val);
+	});
+</script>
 ```
 
 Usage example:
