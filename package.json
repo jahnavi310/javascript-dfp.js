@@ -3,7 +3,7 @@
   "version": "1.0",
   "description": "A pure javascript DFP implementation",
   "license": "Apache-2.0",
-  "author": "Jahnavi Patel <jahnavi310@gmail.com>",
+  "author": "Jahnavi Patel <jpatel@cars.com>",
   "homepage": "https://github.com/jahnavi310/javascript-dfp.js",
   "devDependencies": {
     "grunt": "~0.4",
