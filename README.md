@@ -1,6 +1,8 @@
 javascript-dfp.js
 ======================================================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/jahnavi310/javascript-dfp.js.svg)](https://greenkeeper.io/)
+
 javascript-dfp -  A pure javascript implementation for Google DFP
 ---------------------
 
